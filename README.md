@@ -14,4 +14,20 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+Image1: 
+![alt text][logo]
+
+[logo]: https://res.cloudinary.com/guazy/image/upload/v1707157424/mob1_q8sq4m.png "Logo Title Text 2"
+
+Image2: 
+![alt text][logo]
+
+[logo]: https://res.cloudinary.com/guazy/image/upload/v1707157424/mob2_cgckk0.png "Logo Title Text 2"
+
+Image2: 
+![alt text][logo]
+
+[logo]: https://res.cloudinary.com/guazy/image/upload/v1707157424/mob3_cbtxkj.png "Logo Title Text 2"
+
 # flutter-calculator
