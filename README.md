@@ -16,18 +16,18 @@ For help getting started with Flutter development, view the
 samples, guidance on mobile development, and a full API reference.
 
 Image1: 
-![alt text][logo]
+![alt text][logo1]
 
-[logo]: https://res.cloudinary.com/guazy/image/upload/v1707157424/mob1_q8sq4m.png "Logo Title Text 2"
+[logo1]: https://res.cloudinary.com/guazy/image/upload/v1707157424/mob1_q8sq4m.png "Logo Title Text 2"
 
 Image2: 
-![alt text][logo]
+![alt text][logo2]
 
-[logo]: https://res.cloudinary.com/guazy/image/upload/v1707157424/mob2_cgckk0.png "Logo Title Text 2"
+[logo2]: https://res.cloudinary.com/guazy/image/upload/v1707157424/mob2_cgckk0.png "Logo Title Text 2"
 
 Image3: 
-![alt text][logo]
+![alt text][logo3]
 
-[logo]: https://res.cloudinary.com/guazy/image/upload/v1707157424/mob3_cbtxkj.png "Logo Title Text 2"
+[logo3]: https://res.cloudinary.com/guazy/image/upload/v1707157424/mob3_cbtxkj.png "Logo Title Text 2"
 
 # flutter-calculator
