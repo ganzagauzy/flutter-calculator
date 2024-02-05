@@ -25,7 +25,7 @@ Image2:
 
 [logo]: https://res.cloudinary.com/guazy/image/upload/v1707157424/mob2_cgckk0.png "Logo Title Text 2"
 
-Image2: 
+Image3: 
 ![alt text][logo]
 
 [logo]: https://res.cloudinary.com/guazy/image/upload/v1707157424/mob3_cbtxkj.png "Logo Title Text 2"
