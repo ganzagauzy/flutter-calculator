@@ -1,35 +1,86 @@
 import 'package:calculator/calculator_screen.dart';
 import 'package:calculator/pages/about.dart';
 import 'package:calculator/pages/home.dart';
+import 'package:calculator/pages/login.dart';
+import 'package:calculator/dependency_injection.dart';
+import 'package:calculator/theme/theme_provider.dart';
+import 'package:calculator/theme/theme.dart';
+import 'package:provider/provider.dart';
+// import 'package:calculator/pages/register.dart';
 import 'package:flutter/material.dart';
 
-/// Flutter code sample for [BottomNavigationBar].
+Future<void> main() async {
+  // DependecyInjection.init();
+  runApp(const MyApp());
+  // DependecyInjection.init();
+  // runApp(
+  //   ChangeNotifierProvider(
+  //     create: (context) => ThemeProvider(),
+  //     child: MyApp(),
+  //   ),
+  // );
+}
 
-void main() => runApp(const BottomNavigationBarExampleApp());
+bool _isDarkMode = false;
 
-class BottomNavigationBarExampleApp extends StatelessWidget {
-  const BottomNavigationBarExampleApp({super.key});
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
 
   @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final ValueNotifier<ThemeMode> _notifier = ValueNotifier(ThemeMode.light);
+  // This widget is the root of your application.
+  @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: BottomNavigationBarExample(),
-      debugShowCheckedModeBanner: false,
+    return ValueListenableBuilder<ThemeMode>(
+      valueListenable: _notifier,
+      builder: (_, mode, __) {
+        return MaterialApp(
+          title: 'Flutter Demo',
+          debugShowCheckedModeBanner: false,
+          darkTheme: ThemeData.dark(),
+          // themeMode: mode,
+          // theme: Provider.of<ThemeProvider>(context).themeData,
+          themeMode: _isDarkMode ? ThemeMode.dark : ThemeMode.light,
+          // theme: ThemeData(
+          //   primarySwatch: Colors.blue,
+          // ),
+          home: const MyHomePage(title: 'Flutter App'),
+        );
+      },
     );
   }
 }
 
-class BottomNavigationBarExample extends StatefulWidget {
-  const BottomNavigationBarExample({super.key});
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key, required this.title});
+
+  final String title;
 
   @override
-  State<BottomNavigationBarExample> createState() =>
-      _BottomNavigationBarExampleState();
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _BottomNavigationBarExampleState
-    extends State<BottomNavigationBarExample> {
+class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
+  // Track the current theme mode
+  // Function to toggle between light and dark themes
+  void _toggleTheme() {
+    setState(() {
+      _isDarkMode = !_isDarkMode; // Toggle the theme mode
+
+      // themeMode = _isDarkMode ? ThemeMode.dark : ThemeMode.light;
+      if (_isDarkMode) {
+        ThemeData.dark();
+      } else {
+        ThemeData.light();
+      }
+    });
+  }
+
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
@@ -47,30 +98,43 @@ class _BottomNavigationBarExampleState
     HomeScreen(),
     CalculatorScreen(),
     About(),
-
-    // AboutPage(),
   ];
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
-    // Navigate to the AboutPage when the "Calculator" item is tapped
-    // if (index == 1) {
-    //   // Assuming "About" item index is 2
-    //   Navigator.push(
-    //     context,
-    //     MaterialPageRoute(builder: (context) => CalculatorScreen()),
-    //   );
-    // }
+    if (index == 3) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => LoginPage()),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Flutter App'),
+        title: Text(widget.title),
         backgroundColor: Colors.amber[800],
+        actions: [
+          // Add an IconButton to toggle theme
+          IconButton(
+            icon: Icon(_isDarkMode ? Icons.light_mode : Icons.dark_mode),
+            onPressed: () {
+              _toggleTheme();
+              ThemeData.light();
+            },
+            padding: EdgeInsets.all(16.16),
+          ),
+          // ElevatedButton(
+          //     onPressed: () {
+          //       _toggleTheme();
+          //       ThemeData.dark();
+          //     },
+          //     child: Text("data"))
+        ],
       ),
       drawer: Drawer(
         child: ListView(
@@ -101,12 +165,24 @@ class _BottomNavigationBarExampleState
                   _selectedIndex = 2; // Set the selected index to Home
                 });
               },
+            ),
+            ListTile(
+              title: const Text("Login"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginPage()),
+                );
+              },
             )
           ],
         ),
       ),
       body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+        child: _widgetOptions.elementAt(
+          _selectedIndex,
+        ),
+        // child: ElevatedButton(onPressed: () {}, child: Text("Toogle theme")),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
@@ -122,11 +198,16 @@ class _BottomNavigationBarExampleState
             icon: Icon(Icons.info),
             label: 'About',
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Login',
+          ),
         ],
         currentIndex: _selectedIndex,
+        unselectedItemColor: _isDarkMode ? Colors.white : Colors.black,
         selectedItemColor: Colors.amber[800],
         onTap: _onItemTapped,
-        backgroundColor: Colors.grey[50],
+        // backgroundColor: Colors.grey[50],
       ),
     );
   }
