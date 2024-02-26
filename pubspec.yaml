@@ -37,6 +37,12 @@ dependencies:
   get: ^3.26.0
   connectivity_plus: ^3.0.3
   provider: ^6.1.1
+  firebase_auth: ^3.3.14
+  firebase_core_platform_interface: 4.5.1
+  firebase_messaging: ^13.0.4
+  firebase_core: ^1.24.0
+  image_picker: ^0.8.6
+  fluttercontactpicker: ^4.7.0
   # math_expression: ^2.0.0
 
 dev_dependencies:

@@ -6,10 +6,18 @@ import 'package:calculator/dependency_injection.dart';
 import 'package:calculator/theme/theme_provider.dart';
 import 'package:calculator/theme/theme.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 // import 'package:calculator/pages/register.dart';
 import 'package:flutter/material.dart';
 
+import 'mainPage.dart';
+
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   // DependecyInjection.init();
   runApp(const MyApp());
   // DependecyInjection.init();
@@ -48,7 +56,8 @@ class _MyAppState extends State<MyApp> {
           // theme: ThemeData(
           //   primarySwatch: Colors.blue,
           // ),
-          home: const MyHomePage(title: 'Flutter App'),
+          home: MainPage(),
+          // home: const MyHomePage(title: 'Flutter App'),
         );
       },
     );
@@ -116,7 +125,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text("Flutter App"),
         backgroundColor: Colors.amber[800],
         actions: [
           // Add an IconButton to toggle theme

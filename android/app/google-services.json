@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "831721599522",
+    "project_id": "mobile-auth-6c30c",
+    "storage_bucket": "mobile-auth-6c30c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:831721599522:android:be2e47fc3964ff3f03907b",
+        "android_client_info": {
+          "package_name": "com.example.calculator"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgq38xHFGU3YeuVQqSwSGd7lgKNXC8aMw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

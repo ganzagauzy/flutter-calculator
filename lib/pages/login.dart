@@ -1,4 +1,5 @@
 import 'package:calculator/pages/register.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -10,6 +11,31 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  // text controllers
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  Future signin() async {
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim());
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error signing in: $e'),
+        ),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,6 +89,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 20.0),
                       child: TextField(
+                        controller: _emailController,
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: "Email",
@@ -88,6 +115,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 20.0),
                       child: TextField(
+                        controller: _passwordController,
                         obscureText: true,
                         decoration: InputDecoration(
                           border: InputBorder.none,
@@ -106,19 +134,22 @@ class _LoginPageState extends State<LoginPage> {
 
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: Container(
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                        color: Colors.amber[800],
-                        borderRadius: BorderRadius.circular(12)),
-                    child: Center(
-                        child: Text(
-                      "Login",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18),
-                    )),
+                  child: GestureDetector(
+                    onTap: signin,
+                    child: Container(
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          color: Colors.amber[800],
+                          borderRadius: BorderRadius.circular(12)),
+                      child: Center(
+                          child: Text(
+                        "Login",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18),
+                      )),
+                    ),
                   ),
                 ),
 
