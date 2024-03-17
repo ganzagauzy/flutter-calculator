@@ -60,15 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     //     ? Image.asset(_selectedIage!.path)
                     //     : const Text("Plz select image"),
                     SizedBox(height: 25),
-                    MaterialButton(
-                      onPressed: () {
-                        FirebaseAuth.instance.signOut();
-                      },
-                      color: Colors.red,
-                      child: Text("Logout"),
-                      textColor: Colors.white,
-                    ),
-                    SizedBox(height: 25),
+
                     MaterialButton(
                         color: Colors.blue,
                         child: const Text(
@@ -83,20 +75,20 @@ class _HomeScreenState extends State<HomeScreen> {
                           _pickImageFromGalery();
                         }),
                     SizedBox(height: 25),
-                    MaterialButton(
-                        color: Colors.amber,
-                        child: const Text(
-                          "Pick image from camera",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
-                        onPressed: () {
-                          _pickImageFromCamera();
-                        }),
-                    SizedBox(height: 25),
+                    // MaterialButton(
+                    //     color: Colors.amber,
+                    //     child: const Text(
+                    //       "Pick image from camera",
+                    //       style: TextStyle(
+                    //         color: Colors.white,
+                    //         fontWeight: FontWeight.bold,
+                    //         fontSize: 16,
+                    //       ),
+                    //     ),
+                    //     onPressed: () {
+                    //       _pickImageFromCamera();
+                    //     }),
+                    // SizedBox(height: 25),
                   ]),
                 ),
                 if (_imageData != null)

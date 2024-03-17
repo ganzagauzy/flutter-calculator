@@ -1,5 +1,8 @@
+import 'package:calculator/pages/home.dart';
 import 'package:calculator/pages/register.dart';
+import 'package:calculator/pages/guest/quiz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -27,6 +30,31 @@ class _LoginPageState extends State<LoginPage> {
         ),
       );
     }
+  }
+
+  void route() {
+    User? user = FirebaseAuth.instance.currentUser;
+    var kk = FirebaseFirestore.instance
+        .collection('users')
+        .doc(user!.uid)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        if (documentSnapshot.get('role') == "guest") {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => GuestQuizPage()),
+          );
+        } else {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => HomeScreen()),
+          );
+        }
+      } else {
+        print('Document does not exist on the database');
+      }
+    });
   }
 
   @override
@@ -186,7 +214,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ],
                   ),
-                )
+                ),
               ],
             ),
           ),

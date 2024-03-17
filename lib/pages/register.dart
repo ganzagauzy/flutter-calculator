@@ -1,5 +1,6 @@
 import 'package:calculator/pages/login.dart';
 import 'package:flutter/foundation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +13,7 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   // text controllers
-  // final _nameController = TextEditingController();
+  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   // final _confirmpasswordController = TextEditingController();
@@ -43,14 +44,41 @@ class _RegisterPageState extends State<RegisterPage> {
       // Sign-up successful, you can do something here
       // print('Sign-up successful: ${userCredential.user?.email}');
       // Navigate to another page, show a success message, etc.
+      postToFirestore();
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => LoginPage()),
+      // );
+    } catch (e) {
+      // Handle sign-up errors
+      // print('Error signing up: $e');
+      // Show an error message, log the error, etc.
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error signing up: $e'),
+        ),
+      );
+    }
+  }
+
+  void postToFirestore() {
+    try {
+      FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+      var user = FirebaseAuth.instance.currentUser!;
+      CollectionReference ref = FirebaseFirestore.instance.collection('users');
+      ref.doc(user.uid).set({
+        'email': _emailController.text.trim(),
+        'name': _nameController.text.trim(),
+        'role': "guest"
+      });
+      // Navigator.pushReplacement(
+      //     context, MaterialPageRoute(builder: (context) => LoginPage()));
+      // Navigate to the next page using Navigator
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => LoginPage()),
       );
     } catch (e) {
-      // Handle sign-up errors
-      // print('Error signing up: $e');
-      // Show an error message, log the error, etc.
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Error signing up: $e'),
@@ -112,6 +140,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 20.0),
                       child: TextField(
+                        controller: _nameController,
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: "Name",

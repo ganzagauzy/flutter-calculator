@@ -1,5 +1,6 @@
 import 'package:calculator/calculator_screen.dart';
 import 'package:calculator/pages/about.dart';
+import 'package:calculator/pages/admin/quiz.dart';
 import 'package:calculator/pages/home.dart';
 import 'package:calculator/pages/login.dart';
 import 'package:calculator/dependency_injection.dart';
@@ -7,6 +8,7 @@ import 'package:calculator/theme/theme_provider.dart';
 import 'package:calculator/theme/theme.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'firebase_options.dart';
 // import 'package:calculator/pages/register.dart';
 import 'package:flutter/material.dart';
@@ -90,6 +92,10 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void _logout() {
+    FirebaseAuth.instance.signOut();
+  }
+
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
@@ -107,18 +113,19 @@ class _MyHomePageState extends State<MyHomePage> {
     HomeScreen(),
     CalculatorScreen(),
     About(),
+    AdminQuizPage(),
   ];
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
-    if (index == 3) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => LoginPage()),
-      );
-    }
+    // if (index == 3) {
+    //   Navigator.push(
+    //     context,
+    //     MaterialPageRoute(builder: (context) => LoginPage()),
+    //   );
+    // }
   }
 
   @override
@@ -137,12 +144,15 @@ class _MyHomePageState extends State<MyHomePage> {
             },
             padding: EdgeInsets.all(16.16),
           ),
-          // ElevatedButton(
-          //     onPressed: () {
-          //       _toggleTheme();
-          //       ThemeData.dark();
-          //     },
-          //     child: Text("data"))
+          ElevatedButton(
+            onPressed: () {
+              _logout();
+            },
+            style: ElevatedButton.styleFrom(
+              primary: Colors.amber[800], // Set background color to amber
+            ),
+            child: Icon(Icons.logout), // Use icon instead of text
+          )
         ],
       ),
       drawer: Drawer(
@@ -176,14 +186,14 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
             ListTile(
-              title: const Text("Login"),
+              title: const Text("Quizes"),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoginPage()),
-                );
+                Navigator.pop(context); // Close the drawer
+                setState(() {
+                  _selectedIndex = 3; // Set the selected index to Home
+                });
               },
-            )
+            ),
           ],
         ),
       ),
@@ -208,8 +218,8 @@ class _MyHomePageState extends State<MyHomePage> {
             label: 'About',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Login',
+            icon: Icon(Icons.approval),
+            label: 'Quizes',
           ),
         ],
         currentIndex: _selectedIndex,
