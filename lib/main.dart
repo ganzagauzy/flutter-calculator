@@ -1,12 +1,10 @@
 import 'package:calculator/calculator_screen.dart';
 import 'package:calculator/pages/about.dart';
 import 'package:calculator/pages/admin/quiz.dart';
+import 'package:calculator/pages/admin/homeQuiz.dart';
+import 'package:calculator/pages/admin/createQuiz.dart';
 import 'package:calculator/pages/home.dart';
-import 'package:calculator/pages/login.dart';
-import 'package:calculator/dependency_injection.dart';
-import 'package:calculator/theme/theme_provider.dart';
-import 'package:calculator/theme/theme.dart';
-import 'package:provider/provider.dart';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'firebase_options.dart';
@@ -76,7 +74,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 3;
   // Track the current theme mode
   // Function to toggle between light and dark themes
   void _toggleTheme() {
@@ -114,6 +112,8 @@ class _MyHomePageState extends State<MyHomePage> {
     CalculatorScreen(),
     About(),
     AdminQuizPage(),
+    InitialQuizPage(),
+    CreateQuizPage(),
   ];
 
   void _onItemTapped(int index) {

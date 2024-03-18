@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:calculator/pages/guest/quiz.dart';
 
-class Options extends StatefulWidget {
+class QuizOptions extends StatefulWidget {
   String option;
-  Options({super.key, required this.option});
+  QuizOptions({super.key, required this.option});
 
   @override
-  State<Options> createState() => _OptionsState();
+  State<QuizOptions> createState() => _QuizoptionsState();
 }
 
-class _OptionsState extends State<Options> {
+class _QuizoptionsState extends State<QuizOptions> {
   bool _isSelected = false;
   int _currestOption = 2;
 
@@ -17,7 +18,7 @@ class _OptionsState extends State<Options> {
     return Column(
       children: [
         Container(
-          height: 48,
+          height: 100,
           width: 240,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
@@ -54,5 +55,9 @@ class _OptionsState extends State<Options> {
 
   checkSelected(val) {
     _currestOption = 1;
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => GuestQuizPage()),
+    );
   }
 }

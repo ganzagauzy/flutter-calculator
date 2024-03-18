@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:calculator/pages/guest/completePage.dart';
-import 'package:calculator/pages/guest/homeQuiz.dart';
 import 'package:calculator/pages/guest/options.dart';
+import 'package:calculator/pages/guest/quizoptions.dart';
 import 'package:calculator/pages/login.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
@@ -13,18 +13,19 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
-class GuestQuizPage extends StatefulWidget {
-  const GuestQuizPage({super.key});
+class InitialQuizPage extends StatefulWidget {
+  const InitialQuizPage({super.key});
 
   @override
-  State<GuestQuizPage> createState() => _Guestquizpage();
+  State<InitialQuizPage> createState() => _Initialquizpage();
 }
 
-class _Guestquizpage extends State<GuestQuizPage> {
+class _Initialquizpage extends State<InitialQuizPage> {
   // text controllers
   // final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final user = FirebaseAuth.instance.currentUser!;
   // final _confirmpasswordController = TextEditingController();
 
   List responseData = [];
@@ -42,45 +43,10 @@ class _Guestquizpage extends State<GuestQuizPage> {
     super.dispose();
   }
 
-  Future<List<Map<String, dynamic>>> fetchDataFromFirestore() async {
-    try {
-      QuerySnapshot querySnapshot =
-          await FirebaseFirestore.instance.collection('quizes').get();
-
-      List<Map<String, dynamic>> dataList = [];
-
-      querySnapshot.docs.forEach((doc) {
-        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-        dataList.add(data);
-      });
-      print('list: $dataList');
-      return dataList;
-    } catch (e) {
-      // Handle error
-      print('Error fetching data: $e');
-      return [];
-    }
-  }
-
-  Future api() async {
-    final response =
-        await http.get(Uri.parse('https://opentdb.com/api.php?amount=10'));
-    if (response.statusCode == 200) {
-      var data = jsonDecode(response.body)['results'];
-      setState(() {
-        responseData = data;
-        updateShufleOption();
-        startTimer();
-      });
-    }
-  }
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    api();
-    fetchDataFromFirestore();
     // startTimer();
   }
 
@@ -123,6 +89,15 @@ class _Guestquizpage extends State<GuestQuizPage> {
                           borderRadius: BorderRadius.circular(20),
                         ),
                       ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "signed in as " + user.email!,
+                            style: TextStyle(color: Colors.white, fontSize: 18),
+                          ),
+                        ],
+                      ),
                       Positioned(
                           bottom: 60,
                           left: 22,
@@ -148,12 +123,12 @@ class _Guestquizpage extends State<GuestQuizPage> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        '05',
+                                        '',
                                         style: TextStyle(
                                             color: Colors.green, fontSize: 20),
                                       ),
                                       Text(
-                                        (number + 1).toString(),
+                                        '',
                                         style: TextStyle(
                                             color: Colors.red, fontSize: 20),
                                       )
@@ -161,122 +136,41 @@ class _Guestquizpage extends State<GuestQuizPage> {
                                   ),
                                   Center(
                                     child: Text(
-                                      'Question ${number + 1}/10',
-                                      style:
-                                          TextStyle(color: Colors.amber[800]),
+                                      'Quizes',
+                                      style: TextStyle(
+                                        color: Colors.amber[800],
+                                        fontSize: 18,
+                                      ),
                                     ),
                                   ),
                                   SizedBox(
                                     height: 30,
                                   ),
-                                  Text(responseData.isNotEmpty
-                                      ? responseData[number]['question']
-                                      : '')
+                                  Text(
+                                    'Browse through the quizes below and choose one to attempt',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  )
                                 ],
                               ),
                             ),
                           )),
-                      Positioned(
-                        bottom: 210,
-                        left: 140,
-                        child: CircleAvatar(
-                          radius: 42,
-                          backgroundColor: Colors.white,
-                          child: Center(
-                            child: Text(
-                              _secondsRemaining.toString(),
-                              style: TextStyle(
-                                color: Colors.amber[800],
-                                fontSize: 25,
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
                     ],
                   ),
                 ),
                 SizedBox(
                   height: 1,
                 ),
-                Column(
-                  children: (responseData.isNotEmpty &&
-                          responseData[number]['incorrect_answers'] != null)
-                      ? shuffleOptions.map((option) {
-                          return Options(option: option.toString());
-                        }).toList()
-                      : [],
-                ),
+                QuizOptions(option: "QuizA"),
+                QuizOptions(option: "QuizB"),
+                QuizOptions(option: "QuizC"),
+                QuizOptions(option: "QuizD"),
                 SizedBox(
                   height: 30,
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 18),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.amber[800],
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18),
-                      ),
-                      elevation: 5,
-                    ),
-                    onPressed: () {
-                      nextQuestion();
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(builder: (context) => Completed()),
-                      // );
-                    },
-                    child: Container(
-                      alignment: Alignment.center,
-                      child: Text(
-                        'Next',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                ),
                 SizedBox(
                   height: 20,
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 18),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18),
-                      ),
-                      elevation: 5,
-                    ),
-                    onPressed: () {
-                      goHome();
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(builder: (context) => Completed()),
-                      // );
-                    },
-                    child: Container(
-                      alignment: Alignment.center,
-                      child: Text(
-                        'Home',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
+                )
               ],
             ),
           ),
@@ -330,12 +224,5 @@ class _Guestquizpage extends State<GuestQuizPage> {
         }
       });
     });
-  }
-
-  void goHome() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => InitialQuizPage()),
-    );
   }
 }

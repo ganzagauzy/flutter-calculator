@@ -1,6 +1,7 @@
 import 'package:calculator/main.dart';
 import 'package:calculator/pages/guest/completePage.dart';
 import 'package:calculator/pages/guest/quiz.dart';
+import 'package:calculator/pages/guest/homeQuiz.dart';
 import 'package:calculator/pages/home.dart';
 import 'package:calculator/pages/login.dart';
 import 'package:flutter/material.dart';
@@ -53,7 +54,7 @@ class MainPage extends StatelessWidget {
                 if (userSnapshot.data != null) {
                   if (userSnapshot.data!.exists) {
                     if (userSnapshot.data!.get('role') == "guest") {
-                      return Completed();
+                      return InitialQuizPage();
                     } else {
                       return MyHomePage(title: 'Flutter App');
                     }
